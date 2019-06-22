@@ -1,11 +1,14 @@
 const http = require('http');
 const chalk = require('chalk');
-const {hostname, port} = require('./config/default-config');
+
+const {
+  hostname,
+  port
+} = require('./config/default-config');
+const route = require('./helper/route');
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/html');
-  res.end('<h1>Hello, World!</h1>');
+  route(req, res);
 });
 
 server.listen(port, hostname, err => {
@@ -13,5 +16,5 @@ server.listen(port, hostname, err => {
     throw err;
   }
   const addr = `http://${hostname}:${port}`;
-  console.info(`Server is running on ${chalk.green(addr)}`)
+  console.info(`Server is running on ${chalk.green(addr)}`);
 });
