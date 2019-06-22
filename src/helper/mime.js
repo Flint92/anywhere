@@ -12,7 +12,7 @@ const mimetypes = {
   '.json': 'application/json'
 };
 
-module.exports = function (filepath) {
+module.exports = filepath => {
   const extname = path.extname(filepath).toLowerCase();
   const mimetype = mimetypes[extname];
   return mimetype || mimetypes['.txt'];

@@ -1,13 +1,14 @@
 const path = require('path');
 const fs = require('fs');
 const mimetype = require('./mime');
+const compress = require('./compress');
 const promisify = require('util').promisify;
 const stat = promisify(fs.stat);
 const readdir = promisify(fs.readdir);
 
-const {root} = require('../config/default-config');
+const {root, compressRules} = require('../config/default-config');
 
-const buildUl = function (url, files) {
+const buildUl = (url, files) => {
   let content = '<ul>';
   files.forEach(file => {
     const href = path.join(url, file);
@@ -18,21 +19,25 @@ const buildUl = function (url, files) {
   return content;
 };
 
-module.exports = async function(req, res) {
+module.exports = async (req, res) => {
   const url = req.url;
-  const file_path = path.join(root, url);
+  const filePath = path.join(root, url);
 
   try {
-    const stats = await stat(file_path);
+    const stats = await stat(filePath);
 
     if (stats.isFile()) {
       res.statusCode = 200;
-      res.setHeader('Content-Type', mimetype(file_path));
-      fs.createReadStream(file_path).pipe(res);
+      res.setHeader('Content-Type', mimetype(filePath));
+      let rs = fs.createReadStream(filePath);
+      if (filePath.match(compressRules)) {
+        rs = compress(rs, req, res);
+      }
+      rs.pipe(res);
+
     }
     else if (stats.isDirectory()) {
-      const files = await readdir(file_path);
-
+      const files = await readdir(filePath);
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/html');
       res.end(buildUl(url, files));
