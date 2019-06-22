@@ -1,0 +1,30 @@
+{
+  "name": "anywhere",
+  "version": "1.0.0",
+  "description": "Tiny Static Web Server Build By NodeJs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check": "eslint .",
+    "fix": "eslint --fix ."
+  },
+  "pre-commit": [
+    "fix",
+    "check"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Flint92/anywhere.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Flint92/anywhere/issues"
+  },
+  "homepage": "https://github.com/Flint92/anywhere#readme",
+  "devDependencies": {
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.0.0",
+    "pre-commit": "^1.2.2"
+  }
+}
