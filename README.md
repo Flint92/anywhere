@@ -1,23 +1,36 @@
 # anywhere
 Tiny Static Web Server Build By NodeJs
 
+## clone
+
+```shell
+git clone https://github.com/Flint92/anywhere.git
+```
+
+## chmod
+
+```shell
+cd anywhere
+chmod +x bin/anywhere
+```
+
 
 
 ## how to use
 
 ```shell
-anywhere # 使用当前文件夹为静态服务器根目录
+bin/anywhere # 使用当前文件夹为静态服务器根目录
 ```
 
 ```shell
-anywhere -p 8080 # 指定端口号
+bin/anywhere -p 8080 # 指定端口号
 ```
 
 ```shell
-anywhere -h localhost # 指定主机名
+bin/anywhere -h localhost # 指定主机名
 ```
 
 ```shell
-anywhere -d /usr # 指定静态服务器根目录
+bin/anywhere -d /usr # 指定静态服务器根目录
 ```
 
