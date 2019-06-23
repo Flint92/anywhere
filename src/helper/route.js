@@ -3,6 +3,7 @@ const fs = require('fs');
 const mimetype = require('./mime');
 const compress = require('./compress');
 const range = require('./range');
+const isFresh = require('./cache');
 const promisify = require('util').promisify;
 const stat = promisify(fs.stat);
 const readdir = promisify(fs.readdir);
@@ -29,6 +30,12 @@ module.exports = async (req, res) => {
 
     if (stats.isFile()) {
       res.setHeader('Content-Type', mimetype(filePath));
+      if (isFresh(stats, req, res)) {
+        res.statusCode = 304;
+        res.end();
+        return;
+      }
+
       let rs;
       const {code, start, end} = range(stats.size, req, res);
       res.statusCode = code;
