@@ -8,8 +8,6 @@ const promisify = require('util').promisify;
 const stat = promisify(fs.stat);
 const readdir = promisify(fs.readdir);
 
-const {root, compressRules} = require('../config/default-config');
-
 const buildUl = (url, files) => {
   let content = '<ul>';
   files.forEach(file => {
@@ -21,9 +19,9 @@ const buildUl = (url, files) => {
   return content;
 };
 
-module.exports = async (req, res) => {
-  const url = req.url;
-  const filePath = path.join(root, url);
+module.exports = async (req, res, conf) => {
+  const url = decodeURI(req.url);
+  const filePath = path.join(conf.root, url);
 
   try {
     const stats = await stat(filePath);
@@ -46,7 +44,7 @@ module.exports = async (req, res) => {
         rs = fs.createReadStream(filePath, {start, end});
       }
 
-      if (filePath.match(compressRules)) {
+      if (filePath.match(conf.compressRules)) {
         rs = compress(rs, req, res);
       }
       rs.pipe(res);
